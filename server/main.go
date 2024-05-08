@@ -7,6 +7,7 @@ import (
 	"github/raiansantos/vim-gemini/gemini"
 	"log"
 	"net"
+	"os"
 )
 
 type Client struct {
@@ -84,7 +85,12 @@ func (c *Client) handleRequest(ctx context.Context) {
 }
 
 func main() {
-	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", "0.0.0.0", "32000"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "32000"
+	}
+
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", "0.0.0.0", port))
 	if err != nil {
 		log.Fatal(err)
 	}
