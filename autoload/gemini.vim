@@ -17,13 +17,18 @@ endfunction
 
 func! gemini#explain() abort
   if has('channel')
-    let ch = ch_open('localhost:32000', {'mode': 'raw', 'callback': 's:handler'})
+    let ch = ch_open(g:gemini_server, {'mode': 'raw', 'callback': 's:handler'})
     call ch_sendraw(ch, json_encode({'command': 'explain', 'data': s:get_visual_selection()}))
   else
     echom 'Channel not enabled'
   endif
 endfunction
 
-func! gemini#Explain() abort
-  call gemini#explain()
+func! gemini#debug() abort
+  if has('channel')
+    let ch = ch_open(g:gemini_server, {'mode': 'raw', 'callback': 's:handler'})
+    call ch_sendraw(ch, json_encode({'command': 'debug', 'data': s:get_visual_selection()}))
+  else
+    echom 'Channel not enabled'
+  endif
 endfunction

@@ -4,3 +4,4 @@ endif
 let g:loaded_gemini = 1
 
 command! -range=% GMExplain call gemini#explain()
+command! -range=% GMDebug call gemini#debug()
