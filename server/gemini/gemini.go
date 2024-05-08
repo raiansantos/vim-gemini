@@ -3,7 +3,6 @@ package gemini
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
@@ -25,26 +24,28 @@ func (c *Client) extractAnswer(resp *genai.GenerateContentResponse) string {
 	return anwser
 }
 
-func (c *Client) DebugCode(ctx context.Context, filetype, code string) string {
+func (c *Client) DebugCode(ctx context.Context, filetype, code string) (string, error) {
 	model := c.gmClient.GenerativeModel("gemini-1.0-pro")
 	cs := model.StartChat()
 
-	res, err := cs.SendMessage(ctx, genai.Text(fmt.Sprintf("Could you debug this %s piece of code?\n\n%s", filetype, code)))
+	message := fmt.Sprintf("Could you validate if this code is right, and if its not, debug this %s piece of code?\n\n%s", filetype, code)
+	res, err := cs.SendMessage(ctx, genai.Text(message))
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
-	return c.extractAnswer(res)
+	return c.extractAnswer(res), nil
 }
 
-func (c *Client) ExplainCode(ctx context.Context, filetype, code string) string {
+func (c *Client) ExplainCode(ctx context.Context, filetype, code string) (string, error) {
 	model := c.gmClient.GenerativeModel("gemini-1.0-pro")
 	cs := model.StartChat()
 
-	res, err := cs.SendMessage(ctx, genai.Text(fmt.Sprintf("Could you explain me this %s piece of code?\n\n%s", filetype, code)))
+	message := fmt.Sprintf("Could you explain me this %s piece of code?\n\n%s", filetype, code)
+	res, err := cs.SendMessage(ctx, genai.Text(message))
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
-	return c.extractAnswer(res)
+	return c.extractAnswer(res), nil
 }
 
 func New(token string) (*Client, error) {

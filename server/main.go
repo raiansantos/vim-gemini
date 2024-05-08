@@ -47,12 +47,20 @@ func (c *Client) executeClient(ctx context.Context, command map[string]any) []by
 	}
 
 	if cmd == "explain" {
-		answer := c.gmClient.ExplainCode(ctx, filetype, data)
+		answer, err := c.gmClient.ExplainCode(ctx, filetype, data)
+		if err != nil {
+			fmt.Println(err)
+			return []byte{}
+		}
 		return c.createVimAnswer(ctx, answer)
 	}
 
 	if cmd == "debug" {
-		answer := c.gmClient.DebugCode(ctx, filetype, data)
+		answer, err := c.gmClient.DebugCode(ctx, filetype, data)
+		if err != nil {
+			fmt.Println(err)
+			return []byte{}
+		}
 		return c.createVimAnswer(ctx, answer)
 	}
 
@@ -96,7 +104,9 @@ func main() {
 	}
 	defer listener.Close()
 
-	gmClient, err := gemini.New("GEMINI_API_KEY")
+	fmt.Println("Server started. Listening at", fmt.Sprintf("%s:%s", "0.0.0.0", port))
+
+	gmClient, err := gemini.New(os.Getenv("GEMINI_API_KEY"))
 	if err != nil {
 		log.Fatal(err)
 	}
