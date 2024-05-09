@@ -28,7 +28,7 @@ func (c *Client) DebugCode(ctx context.Context, filetype, code string) (string, 
 	model := c.gmClient.GenerativeModel("gemini-1.0-pro")
 	cs := model.StartChat()
 
-	message := fmt.Sprintf("Could you validate if this code is right, and if its not, debug this %s piece of code?\n\n%s", filetype, code)
+	message := fmt.Sprintf("Could you validate if this code is right, and if its not, debug this %s piece of code? Give me the answer without markdown formatting and each line with 100 characters maximum.\n\n%s", filetype, code)
 	res, err := cs.SendMessage(ctx, genai.Text(message))
 	if err != nil {
 		return "", err
@@ -40,7 +40,7 @@ func (c *Client) ExplainCode(ctx context.Context, filetype, code string) (string
 	model := c.gmClient.GenerativeModel("gemini-1.0-pro")
 	cs := model.StartChat()
 
-	message := fmt.Sprintf("Could you explain me this %s piece of code?\n\n%s", filetype, code)
+	message := fmt.Sprintf("Could you explain me this %s piece of code? Give me the answer without markdown formatting and each line with 100 characters maximum.\n\n%s", filetype, code)
 	res, err := cs.SendMessage(ctx, genai.Text(message))
 	if err != nil {
 		return "", err
