@@ -68,7 +68,7 @@ func (c *Client) executeClient(ctx context.Context, command map[string]any) []by
 }
 
 func (c *Client) handleRequest(ctx context.Context) {
-	defer c.conn.Close()
+	//	defer c.conn.Close()
 
 	buf := make([]byte, 1024)
 
