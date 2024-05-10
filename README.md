@@ -24,10 +24,10 @@ Vim plugin can be installed using your favorite plugin manager.
 It expect a `g:gemini_server` variable in your `.vimrc` which points to your just started server
 
 ```vim
-    let g:gemini_server = 'localhost:32000'
+let g:gemini_server = 'localhost:32000'
 ```
 
-## How to use
+## How to use it
 
-Select your piece using visual mode and hit `:GMExplain` or `:GMDebug`
+Select your piece of code using visual mode and hit `:GMExplain` or `:GMDebug`
 
