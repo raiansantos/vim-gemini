@@ -4,6 +4,7 @@ var ch: channel
 
 def Handler(channel: any, msg: string)
   var data = json_decode(msg)
+  echo "Showing the answer from Gemini. Move the cursor to close the popup."
   call popup_create(split(data.answer, '\n'), {'moved': 'any', 'border': [1, 1, 1, 1], 'padding': [1, 3, 1, 3], 'maxwidth': 120})
 enddef
 
@@ -25,11 +26,11 @@ export def Explain()
   endif
 
   if ch_status(ch) != 'open'
-    echom "Channel is not open"
-    echom ch_info(ch)
+    echoe "There was an error on ask to Gemini. Try again later!"
     return
   endif
 
+  echo "Asking to Gemini.."
   ch_sendraw(ch, json_encode({'command': 'explain', 'filetype': &filetype, 'data': GetVisualSelection()}))
 enddef
 
@@ -39,10 +40,10 @@ export def Debug()
   endif
 
   if ch_status(ch) != 'open'
-    echom "Channel is not open"
-    echom ch_info(ch)
+    echoe "There was an error on ask to Gemini. Try again later!"
     return
   endif
 
+  echo "Asking to Gemini.."
   ch_sendraw(ch, json_encode({'command': 'debug', 'filetype': &filetype, 'data': GetVisualSelection()}))
 enddef
